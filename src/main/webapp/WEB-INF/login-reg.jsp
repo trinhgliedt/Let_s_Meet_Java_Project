@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body class="pt-3">
+	
     <p class="text-danger"><form:errors path="user.*" />
     	<c:out value="${error}"/>
     </p>
@@ -53,7 +54,7 @@
     <form method="post" action="/login" class="col-5 p-2 mr-3">
         <p>
             <label for="email" class="col-3">E-mail:</label>
-            <input type="text" id="email" name="email" class="col-7" value=<c:out value="${email}" ></c:out>>
+            <input type="text" id="email" name="email" class="col-7" <c:out value="${email}" ></c:out>>
         </p>
         <p>
             <label for="password" class="col-3">Password:</label>

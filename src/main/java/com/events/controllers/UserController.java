@@ -31,14 +31,14 @@ public class UserController {
         this.eventService = eventService;
     }
 	
-//	@GetMapping("/")
-//	public String renderLoginReg(@ModelAttribute("user") User user, Model model) {
-//		// Make list of options for states
-//		HashMap<String, String> stateList = eventService.makeStateList();
-//		model.addAttribute("stateList", stateList);
-//		return "login-reg.jsp";
-//	}
-	
+	@GetMapping("/")
+	public String renderLoginReg(@ModelAttribute("user") User user, Model model) {
+		//Make list of options for states
+		HashMap<String, String> stateList = eventService.makeStateList();
+		model.addAttribute("stateList", stateList);
+		return "login-reg.jsp";
+	}
+
 	@PostMapping("/register")
 	public String processRegistration(@Valid @ModelAttribute("user") User user, BindingResult result, HttpSession session, Model model) {
 		userValidator.validate(user, result); // Validate with custom validator
