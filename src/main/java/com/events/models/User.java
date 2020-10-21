@@ -27,6 +27,8 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @Size(min=3, message="Username must be greater than 3 characters")
+    private String username;
     @Email(message = "E-mail must be valid")
     private String email;
     @Size(min = 8, message = "Password must be at least 8 characters long.")
@@ -55,6 +57,13 @@ public class User {
     
     @OneToMany(mappedBy="eventHost", fetch=FetchType.LAZY)
     private List<Event> hostedEvents;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "users_roles", 
+        joinColumns = @JoinColumn(name = "user_id"), 
+        inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
     
     @Column(updatable=false)
     private Date createdAt;
@@ -158,4 +167,17 @@ public class User {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
 }

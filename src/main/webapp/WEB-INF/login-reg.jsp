@@ -16,6 +16,12 @@
     <p class="text-danger"><form:errors path="user.*" />
     	<c:out value="${error}"/>
     </p>
+    <c:if test="${logoutMessage != null}">
+        <p class="col"><c:out value="${logoutMessage}"></c:out></p>
+    </c:if>
+    <c:if test="${errorMessage != null}">
+        <p class="col"><c:out value="${errorMessage}"></c:out></p>
+    </c:if>
     <div class="container row">
     <!------------------ Registration ------------------->
     <form:form method="POST" action="/register" modelAttribute="user" class="col-5 p-2 mr-3">
@@ -26,6 +32,10 @@
         <p>
             <form:label path="lastName" class="col-3">Last name:</form:label>
             <form:input path="lastName" class="col-7"/>
+        </p>
+        <p>
+            <form:label path="username" class="col-3">Username:</form:label>
+            <form:input path="username" class="col-7"/>
         </p>
         <p>
         	<form:label path="email" class="col-3">Email:</form:label>
@@ -52,13 +62,14 @@
     <!------------------ Log in ------------------->
     <form method="post" action="/login" class="col-5 p-2 mr-3">
         <p>
-            <label for="email" class="col-3">E-mail:</label>
-            <input type="text" id="email" name="email" class="col-7" value=<c:out value="${email}" ></c:out>>
+            <label for="username" class="col-3">Username</label>
+            <input type="text" id="username" name="username" class="col-7"/>
         </p>
         <p>
             <label for="password" class="col-3">Password:</label>
             <input type="password" id="password" name="password" class="col-7"/>
         </p>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="submit" value="Log in" class="btn btn-sm btn-info offset-8"/>
     </form>
     </div>

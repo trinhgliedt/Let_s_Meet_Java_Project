@@ -1,7 +1,7 @@
 package com.events.controllers;
 
+import java.security.Principal;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.events.models.User;
@@ -31,11 +32,19 @@ public class UserController {
         this.eventService = eventService;
     }
 	
-	@GetMapping("/")
-	public String renderLoginReg(@ModelAttribute("user") User user, Model model) {
+	@GetMapping("/login")
+	public String renderLoginReg(@RequestParam(value="error", required=false) String error, @RequestParam(value="logout", required=false) String logout, @ModelAttribute("user") User user, Model model) {
 		// Make list of options for states
 		HashMap<String, String> stateList = eventService.makeStateList();
 		model.addAttribute("stateList", stateList);
+		
+		if(error != null) {
+            model.addAttribute("errorMessage", "Invalid Credentials, Please try again.");
+        }
+        if(logout != null) {
+            model.addAttribute("logoutMessage", "Logout Successful!");
+        }
+        
 		return "login-reg.jsp";
 	}
 	
@@ -44,34 +53,33 @@ public class UserController {
 		userValidator.validate(user, result); // Validate with custom validator
 		userValidator.validateEmail(user, result, userService);
 		if (result.hasErrors()) {
+			System.out.println(result.getAllErrors());
 			// Make list of options for states
 			HashMap<String, String> stateList = eventService.makeStateList();
 			model.addAttribute("stateList", stateList);
     		return "login-reg.jsp"; // Go back to registration page instead of redirect so that error messages will pop up
 		}
 		else {
-			userService.registerUser(user);
-			session.setAttribute("userId", user.getId());
+//			userService.saveWithUserRole(user);
+			userService.saveUserWithAdminRole(user);
+//			session.setAttribute("userId", user.getId());
 			
 		}
-		return "redirect:/events";
+		return "redirect:/login";
 	}
 	
-	@PostMapping("/login")
-	public String processLogin(@RequestParam("email") String email, @RequestParam("password") String password, Model model, HttpSession session, @ModelAttribute("user") User user) {
-		// if the user is authenticated, save their user id in session
-		if (userService.authenticateUser(email, password)) {
-    		session.setAttribute("userId", 				userService.findByEmail(email).getId());
-    			return "redirect:/events";
-    	}
-		else {
-		// else, add error messages and return the login page
-		model.addAttribute("error", "Email or password is incorrect");
-		// Make list of options for states
-		HashMap<String, String> stateList = eventService.makeStateList();
-		model.addAttribute("stateList", stateList);
-		return "login-reg.jsp";
-		}
-	}
+	@RequestMapping("/admin")
+    public String adminPage(Principal principal, Model model) {
+        String username = principal.getName();
+        model.addAttribute("currentUser", userService.findByUsername(username));
+        return "adminPage.jsp";
+    }
 	
+	@RequestMapping(value = {"/", "/home"})
+    public String home(Principal principal, Model model) {
+        // 1
+        String username = principal.getName();
+        model.addAttribute("currentUser", userService.findByUsername(username));
+        return "homePage.jsp";
+    }
 }

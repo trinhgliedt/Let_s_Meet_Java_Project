@@ -20,7 +20,7 @@ public class UserValidator implements Validator {
         if (!user.getPasswordConfirmation().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirmation", "Match");
         }  
-        }
+    }
         
 	
 	public void validateEmail(Object target, Errors errors, UserService userService) {
