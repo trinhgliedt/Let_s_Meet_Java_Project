@@ -17,7 +17,7 @@
 	<form:form action="/events/${event.id}/edit" method="post" modelAttribute="event">
 	<div class="row mb-4">
 		<h3 class="col-5">${event.eventName}</h3>
-		<a href="/home/events/1" class="mr-3 ml-5">View all events</a>
+		<a href="/events" class="mr-3 ml-5">View all events</a>
 		<a href="/logout" >Log out</a>
 	</div>
     	<input type="hidden" name="_method" value="put">

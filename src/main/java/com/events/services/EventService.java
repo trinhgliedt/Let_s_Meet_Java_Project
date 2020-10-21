@@ -6,14 +6,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.events.models.Event;
 import com.events.repositories.EventRepository;
 
 @Service
+@Transactional
 public class EventService {
     
+	@Autowired
 	private final EventRepository eventRepository;
 	
 	public EventService(EventRepository EventRepository) {
@@ -87,6 +96,14 @@ public class EventService {
 	    	stateList.put(s, s);
 	    }	
 	    return stateList;
+    }
+    
+    //for pagination
+    private static final int PAGE_SIZE = 5;
+    public Page<Event> eventsPerPage(int pageNumber) {
+    	PageRequest pageRequest = PageRequest.of(pageNumber, PAGE_SIZE, Sort.Direction.ASC, "eventDate");
+    	Page<Event> events = eventRepository.findAll(pageRequest);
+    	return eventRepository.findAll(pageRequest);
     }
     
 }

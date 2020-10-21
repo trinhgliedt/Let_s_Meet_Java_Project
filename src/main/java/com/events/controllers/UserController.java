@@ -54,7 +54,7 @@ public class UserController {
 			session.setAttribute("userId", user.getId());
 			
 		}
-		return "redirect:/events";
+		return "redirect:/home/events/1";
 	}
 	
 	@PostMapping("/login")
@@ -62,7 +62,7 @@ public class UserController {
 		// if the user is authenticated, save their user id in session
 		if (userService.authenticateUser(email, password)) {
     		session.setAttribute("userId", 				userService.findByEmail(email).getId());
-    			return "redirect:/events";
+    			return "redirect:/home/events/1";
     	}
 		else {
 		// else, add error messages and return the login page
