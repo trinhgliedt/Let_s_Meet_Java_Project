@@ -78,7 +78,7 @@ public class EventController {
 			event.setEventHost(userService.findByUsername(username));
 			//Create event
 			eventService.createEvent(event);
-			return "redirect:/events";
+			return "redirect:/home/events/1";
 		}
 	}
 	
@@ -88,7 +88,7 @@ public class EventController {
 		
 		Long eventId = Long.parseLong(eventIdStr);
 		eventService.deleteEvent(eventId);
-		return "redirect:/events";
+		return "redirect:/home/events/1";
 	}
 	
 	//Get route for update
@@ -100,7 +100,7 @@ public class EventController {
 		Long eventId = Long.parseLong(eventIdStr);
 		Event thisEvent = eventService.getEventById(eventId);
 		if (thisEvent == null) { // If no event found
-			return "redirect:/events"; // redirect to events page
+			return "redirect:/home/events/1"; // redirect to events page
 		}
 		
 		if (thisEvent.getEventHost().getId() != thisUser.getId()) {//If the logged in user is not the host of this event
@@ -131,7 +131,7 @@ public class EventController {
         event.setUsers(thisEvent.getUsers());
         
 		eventService.updateEvent(event);
-		return "redirect:/events";
+		return "redirect:/home/events/1";
         }
 	}
 	
@@ -151,7 +151,7 @@ public class EventController {
 		Long eventId = Long.parseLong(eventIdStr);
 		Event thisEvent = eventService.getEventById(eventId);
 		if (thisEvent == null) { // If no event found
-			return "redirect:/events"; // redirect to events page
+			return "redirect:/home/events/1"; // redirect to events page
 		}
 		String username = principal.getName();
 		User thisUser = userService.findByUsername(username);
@@ -167,7 +167,7 @@ public class EventController {
 			thisEvent.getUsers().remove(thisUser);
 		}
 			eventService.updateEvent(thisEvent);
-			return "redirect:/events";
+			return "redirect:/home/events/1";
 	}
 	
 	//Get route for new message. Get route for event details.
@@ -176,7 +176,7 @@ public class EventController {
 		Long eventId = Long.parseLong(eventIdStr);
 		Event thisEvent = eventService.getEventById(eventId);
 		if (thisEvent == null) { // If no event found
-			return "redirect:/events"; // redirect to events page
+			return "redirect:/home/events/1"; // redirect to events page
 		}
 		String username = principal.getName();
 		
