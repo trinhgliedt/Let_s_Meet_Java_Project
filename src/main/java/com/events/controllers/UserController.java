@@ -64,7 +64,7 @@ public class UserController {
 //			userService.saveUserWithAdminRole(user);
 			
 		}
-		return "redirect:/login";
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/admin")

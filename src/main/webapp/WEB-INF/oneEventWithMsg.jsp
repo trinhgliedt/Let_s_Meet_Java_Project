@@ -15,7 +15,7 @@
     <style>
     	* {
     		margin: 0 auto;
-    		padding: 0 200px;
+    		padding: 0;
     	}
     	
     	#msg {
