@@ -32,7 +32,7 @@
 <body class="p-4">
 	<div class="row mb-4"> <!-- Top bar -->
 		<h3 class="col-8">${event.eventName}</h3>
-		<a href="/events" class="mr-3 ml-5">View all events</a>
+		<a href="/home/events/1" class="mr-3 ml-5">View all events</a>
 		<form id="logoutForm" method="POST" action="/logout">
 	        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	        <input class="btn btn-link pt-0" type="submit" value="Log out" />

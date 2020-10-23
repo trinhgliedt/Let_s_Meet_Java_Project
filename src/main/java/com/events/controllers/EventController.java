@@ -36,9 +36,13 @@ public class EventController {
 	@Autowired
 	private MessageService messageService;
 	
-
-	@GetMapping(value = {"/", "/events"}) //this is also the GET route for new event
-	public String renderEvents (Principal principal, Model model, HttpSession session, @ModelAttribute("event") Event event) {
+	@GetMapping("/")
+	public String homepage () {
+		return "redirect:/home/events/1";
+	}
+	
+	@GetMapping("/home/events/{pageNumber}") //this is also the GET route for new event
+	public String renderEvents (Principal principal, Model model, HttpSession session, @PathVariable("pageNumber") int pageNumber, @ModelAttribute("event") Event event) {
 		String username = principal.getName();
 		
 		User thisUser = userService.findByUsername(username);
@@ -53,6 +57,11 @@ public class EventController {
 		// Make list of options for states
 		HashMap<String, String> stateList = eventService.makeStateList();
 		model.addAttribute("stateList", stateList);
+		
+		Page<Event> eventPages = eventService.eventsPerPage(pageNumber - 1);
+		int totalPages = eventPages.getTotalPages();
+		model.addAttribute("totalPages", totalPages);
+		model.addAttribute("eventPages", eventPages);
 		return "eventsWithNew.jsp";
 	}
 	

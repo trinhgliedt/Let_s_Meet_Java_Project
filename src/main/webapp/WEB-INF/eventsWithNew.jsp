@@ -118,6 +118,7 @@
 			            			<form action="/events/${event.id}/delete" method="post" style="display:inline" >
 									    <input type="hidden" name="_method" value="delete">
 									    <input type="submit" value="Delete" class="btn btn-link mb-1 ml-2">
+									    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 									</form>
 			            		</c:when>
 			            		<c:when test="${event.users.contains(user)}">
