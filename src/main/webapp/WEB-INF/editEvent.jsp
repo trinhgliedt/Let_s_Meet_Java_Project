@@ -14,12 +14,15 @@
 </head>
 <body>
 	<div class="col-8 mt-5 mb-5">
-	<form:form action="/events/${event.id}/edit" method="post" modelAttribute="event">
 	<div class="row mb-4">
 		<h3 class="col-5">${event.eventName}</h3>
-		<a href="/events" class="mr-3 ml-5">View all events</a>
-		<a href="/logout" >Log out</a>
+		<a href="/events" class="mr-3 ml-5 pt-2">View all events</a>
+		<form id="logoutForm" method="POST" action="/logout">
+	        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	        <input class="btn btn-link" type="submit" value="Log out" />
+	    </form>
 	</div>
+	<form:form action="/events/${event.id}/edit" method="post" modelAttribute="event">
     	<input type="hidden" name="_method" value="put">
     		<p>
     			<input type="hidden" name="_method" value="put">

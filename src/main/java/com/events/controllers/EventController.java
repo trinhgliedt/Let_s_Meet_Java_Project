@@ -1,6 +1,7 @@
 package com.events.controllers;
 
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -34,32 +35,27 @@ public class EventController {
 	@Autowired
 	private MessageService messageService;
 	
-	@GetMapping("/events") //this is also the GET route for new event
-	public String renderEvents (Model model, HttpSession session, @ModelAttribute("event") Event event) {
-		Long userId = (Long) session.getAttribute("userId");
-		if (userId == null) { //if user isn't logged in
-			return "redirect:/"; // redirect to log in/reg page
-		}
-		else {
-			User thisUser = userService.findUserById(userId);
-			model.addAttribute("user", thisUser);
-			model.addAttribute("events", eventService.getAllEvents());
-			// Find in state events and add them to model
-			model.addAttribute("inStateEvents", eventService.getInStateEvents(thisUser.getState()));
-			
-			// Find out of state events and add them to model
-			model.addAttribute("outOfStateEvents", eventService.getOutOfStateEvents(thisUser.getState()));
-			
-			// Make list of options for states
-			HashMap<String, String> stateList = eventService.makeStateList();
-			model.addAttribute("stateList", stateList);
-			return "eventsWithNew.jsp";
-			
-		}
+	@GetMapping(value = {"/", "/events"}) //this is also the GET route for new event
+	public String renderEvents (Principal principal, Model model, HttpSession session, @ModelAttribute("event") Event event) {
+		String username = principal.getName();
+		
+		User thisUser = userService.findByUsername(username);
+		model.addAttribute("user", thisUser);
+		model.addAttribute("events", eventService.getAllEvents());
+		// Find in state events and add them to model
+		model.addAttribute("inStateEvents", eventService.getInStateEvents(thisUser.getState()));
+		
+		// Find out of state events and add them to model
+		model.addAttribute("outOfStateEvents", eventService.getOutOfStateEvents(thisUser.getState()));
+		
+		// Make list of options for states
+		HashMap<String, String> stateList = eventService.makeStateList();
+		model.addAttribute("stateList", stateList);
+		return "eventsWithNew.jsp";
 	}
 	
 	@PostMapping("/new-event")
-	public String createNewEvent(@Valid @ModelAttribute("event") Event event, BindingResult result, HttpSession session, Model model) {
+	public String createNewEvent(Principal principal, @Valid @ModelAttribute("event") Event event, BindingResult result, HttpSession session, Model model) {
 		Date curDate = new Date();
 		if (result.hasErrors()) {
 			if (event.getEventDate() != null) {
@@ -74,27 +70,19 @@ public class EventController {
 		}
 		else {
 			//Get user id
-			Long userId = (Long) session.getAttribute("userId");
+			String username = principal.getName();
 			//Set current user to be event host
-			event.setEventHost(userService.findUserById(userId));
+			event.setEventHost(userService.findByUsername(username));
 			//Create event
 			eventService.createEvent(event);
 			return "redirect:/events";
 		}
 	}
 	
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.setAttribute("userId", null);
-		return "redirect:/";
-	}
-	
 	@DeleteMapping("/events/{eventIdStr}/delete")
-	public String deleteEvent(@PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session) {
-		Long userId = (Long) session.getAttribute("userId");
-		if (userId == null) { //if user isn't logged in
-			return "redirect:/"; // redirect to log in/reg page
-		}
+	public String deleteEvent(Principal principal, @PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session) {
+		String username = principal.getName();
+		
 		Long eventId = Long.parseLong(eventIdStr);
 		eventService.deleteEvent(eventId);
 		return "redirect:/events";
@@ -102,11 +90,9 @@ public class EventController {
 	
 	//Get route for update
 	@GetMapping("/events/{eventIdStr}/edit")
-	public String renderEditEvent(@PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session, Model model) {
-		Long userId = (Long) session.getAttribute("userId");
-		if (userId == null) { //if user isn't logged in
-			return "redirect:/"; // redirect to log in/reg page
-		}
+	public String renderEditEvent(Principal principal, @PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session, Model model) {
+		String username = principal.getName();
+		User thisUser = userService.findByUsername(username);
 		
 		Long eventId = Long.parseLong(eventIdStr);
 		Event thisEvent = eventService.getEventById(eventId);
@@ -114,7 +100,7 @@ public class EventController {
 			return "redirect:/events"; // redirect to events page
 		}
 		
-		if (thisEvent.getEventHost().getId() - userId != 0) {//If the logged in user is not the host of this event
+		if (thisEvent.getEventHost().getId() != thisUser.getId()) {//If the logged in user is not the host of this event
 			return "redirect:/events"; // redirect to events page
 		}
 		
@@ -128,8 +114,8 @@ public class EventController {
 	
 	//Post route for update
 	@PutMapping("/events/{eventIdStr}/edit")
-	public String updateEvent(@PathVariable("eventIdStr") String eventIdStr, @Valid @ModelAttribute("event") Event event, BindingResult result, HttpSession session) {
-		Long userId = (Long) session.getAttribute("userId");
+	public String updateEvent(Principal principal, @PathVariable("eventIdStr") String eventIdStr, @Valid @ModelAttribute("event") Event event, BindingResult result, HttpSession session) {
+		String username = principal.getName();
 		Long eventId = Long.parseLong(eventIdStr);
 		Event thisEvent = eventService.getEventById(eventId);
 		if (result.hasErrors()) {
@@ -137,7 +123,7 @@ public class EventController {
         } else {
         // Make sure other field NOT set in edit form are here as well (especially ID). Without this step, a new event will be created instead of having existing event updated.
         event.setId(Long.parseLong(eventIdStr));
-        event.setEventHost(userService.findUserById(userId));
+        event.setEventHost(userService.findByUsername(username));
         event.setMessages(thisEvent.getMessages());
         event.setUsers(thisEvent.getUsers());
         
@@ -148,30 +134,29 @@ public class EventController {
 	
 	
 	@GetMapping("/events/{eventIdStr}/join")
-	public String addEventAttendee(@PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session) {
-		return toggleJoin(eventIdStr, event, session, "join");
+	public String addEventAttendee(Principal principal, @PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session) {
+		return toggleJoin(principal, eventIdStr, event, session, "join");
 	}
 	
 	@GetMapping("/events/{eventIdStr}/cancel")
-	public String removeEventAttendee(@PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session) {
-		return toggleJoin(eventIdStr, event, session, "cancel");
+	public String removeEventAttendee(Principal principal, @PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session) {
+		return toggleJoin(principal, eventIdStr, event, session, "cancel");
 	}
 	
 	
-	private String toggleJoin(String eventIdStr, Event event, HttpSession session, String actionPath) {
+	private String toggleJoin(Principal principal, String eventIdStr, Event event, HttpSession session, String actionPath) {
 		Long eventId = Long.parseLong(eventIdStr);
 		Event thisEvent = eventService.getEventById(eventId);
 		if (thisEvent == null) { // If no event found
 			return "redirect:/events"; // redirect to events page
 		}
-		Long userId = (Long) session.getAttribute("userId");
-		if (userId == null) { //if user isn't logged in
-			return "redirect:/"; // redirect to log in/reg page
-		}
-		if (thisEvent.getEventHost().getId() == userId) {//If the logged in user is the host of this event
+		String username = principal.getName();
+		User thisUser = userService.findByUsername(username);
+		
+		if (thisEvent.getEventHost().getId() == thisUser.getId()) {//If the logged in user is the host of this event
 			return "redirect:/events"; // redirect to events page
 		}
-		User thisUser = userService.findUserById(userId);
+		
 		if (!thisEvent.getUsers().contains(thisUser) && actionPath.equals("join")) {//if user not already already in the event attendee list and the url is join
 			thisEvent.getUsers().add(thisUser);
 		}
@@ -184,16 +169,14 @@ public class EventController {
 	
 	//Get route for new message. Get route for event details.
 	@GetMapping("events/{eventIdStr}")
-	public String renderOneEventPage(@ModelAttribute("message") Message message, @PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session, Model model) {
+	public String renderOneEventPage(Principal principal, @ModelAttribute("message") Message message, @PathVariable("eventIdStr") String eventIdStr, @ModelAttribute("event") Event event, HttpSession session, Model model) {
 		Long eventId = Long.parseLong(eventIdStr);
 		Event thisEvent = eventService.getEventById(eventId);
 		if (thisEvent == null) { // If no event found
 			return "redirect:/events"; // redirect to events page
 		}
-		Long userId = (Long) session.getAttribute("userId");
-		if (userId == null) { //if user isn't logged in
-			return "redirect:/"; // redirect to log in/reg page
-		}
+		String username = principal.getName();
+		
 		model.addAttribute("event", thisEvent);
 		
 		return "oneEventWithMsg.jsp";
@@ -201,11 +184,8 @@ public class EventController {
 	
 	//Post route for new message. 
 	@PostMapping("events/{eventIdStr}")
-	public String createMsg(@PathVariable("eventIdStr") String eventIdStr, HttpSession session, @Valid @ModelAttribute("message") Message message, BindingResult result, Model model) { //We start with a message in modelAttribute that has messageText. We need to link this message to the event and the user(poster), and save it in the database.
-		Long userId = (Long) session.getAttribute("userId");
-		if (userId == null) { //if user isn't logged in
-			return "redirect:/"; // redirect to log in/reg page
-		}
+	public String createMsg(Principal principal, @PathVariable("eventIdStr") String eventIdStr, HttpSession session, @Valid @ModelAttribute("message") Message message, BindingResult result, Model model) { //We start with a message in modelAttribute that has messageText. We need to link this message to the event and the user(poster), and save it in the database.
+		String username = principal.getName();
 		
 		//Get event
     	Long eventId = Long.parseLong(eventIdStr);
@@ -215,7 +195,7 @@ public class EventController {
             return "oneEventWithMsg.jsp";
         } else {
         	//Get user
-        	User thisUser = userService.findUserById(userId);
+        	User thisUser = userService.findByUsername(username);
         	// Link user to this message
         	message.setUser(thisUser);
         	

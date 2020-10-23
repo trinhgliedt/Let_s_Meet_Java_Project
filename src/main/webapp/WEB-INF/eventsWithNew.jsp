@@ -16,7 +16,10 @@
 <body>
 	<div class="row">
 		<h2 class="col-7 ml-2">Welcome, <c:out value="${user.firstName}"/>!</h2>
-		<a href="/logout" class="col-2">Log out</a>
+		<form id="logoutForm" method="POST" action="/logout">
+	        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	        <input class="btn btn-link" type="submit" value="Log out" />
+	    </form>
 	</div>
 	<!-- -------------Top table-------------- -->
 	<div class="col">

@@ -60,9 +60,8 @@ public class UserController {
     		return "login-reg.jsp"; // Go back to registration page instead of redirect so that error messages will pop up
 		}
 		else {
-//			userService.saveWithUserRole(user);
-			userService.saveUserWithAdminRole(user);
-//			session.setAttribute("userId", user.getId());
+			userService.saveWithUserRole(user);
+//			userService.saveUserWithAdminRole(user);
 			
 		}
 		return "redirect:/login";
@@ -75,11 +74,10 @@ public class UserController {
         return "adminPage.jsp";
     }
 	
-	@RequestMapping(value = {"/", "/home"})
-    public String home(Principal principal, Model model) {
-        // 1
-        String username = principal.getName();
-        model.addAttribute("currentUser", userService.findByUsername(username));
-        return "homePage.jsp";
-    }
+//	@RequestMapping(value = {"/", "/home"})
+//    public String home(Principal principal, Model model) {
+//        String username = principal.getName();
+//        model.addAttribute("currentUser", userService.findByUsername(username));
+//        return "homePage.jsp";
+//    }
 }
