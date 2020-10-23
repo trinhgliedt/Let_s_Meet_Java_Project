@@ -12,31 +12,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="Description" content="Page that shows this particular event"> <!-- Explanation that shows up in search engines .-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-    	* {
-    		margin: 0 auto;
-    		padding: 0 200px;
-    	}
-    	
-    	#msg {
-    		padding: 15px;
-    		background-color: #71A9F7;
-    		color: white;
-    		width: 45%;
-    		border-radius: 12px;
-    		box-shadow: 4px 2px 5px -2px #888;
-    	}
-    
-    </style>
+    <!-- <style>
+    * {outline: 1px solid grey;}
+    </style> -->
 </head>
 <body class="p-4">
 	<div class="row mb-4"> <!-- Top bar -->
 		<h3 class="col-8">${event.eventName}</h3>
 		<a href="/events" class="mr-3 ml-5">View all events</a>
-		<form id="logoutForm" method="POST" action="/logout">
-	        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	        <input class="btn btn-link pt-0" type="submit" value="Log out" />
-	    </form>
+		<a href="/logout" >Log out</a>
 	</div>
 	<!-- Main content -->
 	<div class="row">
@@ -71,8 +55,8 @@
 			<h3>Message wall:</h3>
 			<div style="height:200px" class="overflow-auto p-2 border my-4"> <!------------Beginning of Message box--------------->
 				<c:forEach items="${event.messages}" var="message">
-		        <p id="msg"><c:out value="${message.user.firstName}"/> <c:out value="${message.user.lastName}"/>: <c:out value="${message.messageText}"/></p>
-		        <!-- <p>-----------------------</p> -->
+		        <p><c:out value="${message.user.firstName}"/> <c:out value="${message.user.lastName}"/>: <c:out value="${message.messageText}"/></p>
+		        <p>-----------------------</p>
 			    </c:forEach>
 			    <p><c:out value="${errorMessage}"/></p>
 				<form:form method="POST" action="/events/${event.id}" modelAttribute="message">

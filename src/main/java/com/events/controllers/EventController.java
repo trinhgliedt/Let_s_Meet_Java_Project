@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class EventController {
 	@Autowired
 	private MessageService messageService;
 	
+
 	@GetMapping(value = {"/", "/events"}) //this is also the GET route for new event
 	public String renderEvents (Principal principal, Model model, HttpSession session, @ModelAttribute("event") Event event) {
 		String username = principal.getName();
@@ -58,6 +60,7 @@ public class EventController {
 	public String createNewEvent(Principal principal, @Valid @ModelAttribute("event") Event event, BindingResult result, HttpSession session, Model model) {
 		Date curDate = new Date();
 		if (result.hasErrors()) {
+			System.out.println(result.getAllErrors());
 			if (event.getEventDate() != null) {
 				if (!event.getEventDate().after(curDate)) {
 					model.addAttribute("error", "Event date must be after today.");
