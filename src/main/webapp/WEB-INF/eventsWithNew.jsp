@@ -13,6 +13,14 @@
     <meta name="Description" content="Home page"> <!-- Explanation that shows up in search engines goes here.-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+<style>
+	#pag {
+		width: 65%;
+		display: flex;
+		justify-content: space-between;
+	}
+	
+</style>
 <body>
 	<div class="row">
 		<h2 class="col-7 ml-2">Welcome, <c:out value="${user.firstName}"/>!</h2>
@@ -23,7 +31,17 @@
 	</div>
 	<!-- -------------Top table-------------- -->
 	<div class="col">
+		<div id="pag">
 		<h4>Here are some events in your state:</h4>
+		
+		<!-- loop pagination links -->
+			<div>
+	    	<c:forEach begin="1" end="${totalPages}" var="index">
+	        	<a href="/home/events/${index}">${index}</a>
+	    	</c:forEach>
+	    	</div>
+	    </div>
+	    <!-- end pagination loop -->
 		<table class="table table-bordered table-hover col-8">
 		    <thead>
 		        <tr>
@@ -35,7 +53,7 @@
 		        </tr>
 		    </thead>
 		    <tbody>
-		        <c:forEach items="${inStateEvents}" var="event">
+		        <c:forEach items="${eventPages.content}" var="event">
 			        <tr>
 			            <td><a href="/events/${event.id}"><c:out value="${event.eventName}"/></a></td>
 			            <td>
@@ -65,11 +83,12 @@
 		        </c:forEach>
 		    </tbody>
 		</table>
-	
+
 	<!-- -------------Second table-------------- -->
 	
 	
 		<h4>Here are some events in other states:</h4>
+		
 		<table class="table table-bordered table-hover col-8">
 		    <thead>
 		        <tr>
@@ -121,7 +140,7 @@
 			<c:out value="${error}"/>
 			<form:errors path="event.*" />
 		</p>
-		<form:form method="POST" action="/new-event" modelAttribute="event">
+		<form:form method="POST" action="/new-event" modelAttribute="event" style="width: 50%">
 	        <p>
 	            <form:label path="eventName" class="col-2">Name:</form:label>
 	            <form:input path="eventName" class="col-6"/>

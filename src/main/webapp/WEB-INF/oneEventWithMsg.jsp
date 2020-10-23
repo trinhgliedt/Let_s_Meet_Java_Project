@@ -12,9 +12,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="Description" content="Page that shows this particular event"> <!-- Explanation that shows up in search engines .-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- <style>
-    * {outline: 1px solid grey;}
-    </style> -->
+    <style>
+    	* {
+    		margin: 0 auto;
+    		padding: 0 200px;
+    	}
+    	
+    	#msg {
+    		padding: 15px;
+    		background-color: #71A9F7;
+    		color: white;
+    		width: 45%;
+    		border-radius: 12px;
+    		box-shadow: 4px 2px 5px -2px #888;
+    	}
+    
+    </style>
 </head>
 <body class="p-4">
 	<div class="row mb-4"> <!-- Top bar -->
@@ -58,8 +71,8 @@
 			<h3>Message wall:</h3>
 			<div style="height:200px" class="overflow-auto p-2 border my-4"> <!------------Beginning of Message box--------------->
 				<c:forEach items="${event.messages}" var="message">
-		        <p><c:out value="${message.user.firstName}"/> <c:out value="${message.user.lastName}"/>: <c:out value="${message.messageText}"/></p>
-		        <p>-----------------------</p>
+		        <p id="msg"><c:out value="${message.user.firstName}"/> <c:out value="${message.user.lastName}"/>: <c:out value="${message.messageText}"/></p>
+		        <!-- <p>-----------------------</p> -->
 			    </c:forEach>
 			    <p><c:out value="${errorMessage}"/></p>
 				<form:form method="POST" action="/events/${event.id}" modelAttribute="message">
