@@ -12,23 +12,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="Description" content="Home page"> <!-- Explanation that shows up in search engines goes here.-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/homestyles.css">
 </head>
-<style>
-	#pag {
-		width: 65%;
-		display: flex;
-		justify-content: space-between;
-	}
-	
-</style>
+
 <body>
-	<div class="row">
+	<div class="row" id="header">
 		<h2 class="col-7 ml-2">Welcome, <c:out value="${user.firstName}"/>!</h2>
-		<form id="logoutForm" method="POST" action="/logout">
-	        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	        <input class="btn btn-link" type="submit" value="Log out" />
-	    </form>
+			<form id="logoutForm" method="POST" action="/logout">
+		        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		        <input class="btn btn-link" type="submit" value="Log out" />
+		    </form>
 	</div>
+
 	<!-- -------------Top table-------------- -->
 	<div class="col">
 		<div id="pag">
@@ -42,14 +37,14 @@
 	    	</div>
 	    </div>
 	    <!-- end pagination loop -->
-		<table class="table table-bordered table-hover col-8">
+		<table class="table table-hover col-8">
 		    <thead>
 		        <tr>
 		            <th>Name</th>
 		            <th>Date</th>
 		            <th>Location</th>
 		            <th>Host</th>
-		            <th>Action/status</th>
+		            <th>Action/Status</th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -68,7 +63,7 @@
 			            			<a href="/events/${event.id}/edit">Edit</a>
 			            			<form style="display:inline" action="/events/${event.id}/delete" method="post" >
 									    <input type="hidden" name="_method" value="delete">
-									    <input type="submit" value="Delete" class="btn btn-link mb-1 ml-2"  >
+									    <input type="submit" value="Delete" class="btn btn-link mb-1 ml-2 delete"  >
 									    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 									</form>
 			            		</c:when>
@@ -88,9 +83,9 @@
 	<!-- -------------Second table-------------- -->
 	
 	
-		<h4>Here are some events in other states:</h4>
+		<h4 id="subheader">Here are some events in other states:</h4>
 		
-		<table class="table table-bordered table-hover col-8">
+		<table class="table table-hover col-8">
 		    <thead>
 		        <tr>
 		            <th>Name</th>
@@ -98,7 +93,7 @@
 		            <th>Location</th>
 		            <th>State</th>
 		            <th>Host</th>
-		            <th>Action</th>
+		            <th>Action/Status</th>
 		        </tr>
 		    </thead>
 		    <tbody>
@@ -118,7 +113,7 @@
 			            			<a href="/events/${event.id}/edit">Edit</a>
 			            			<form action="/events/${event.id}/delete" method="post" style="display:inline" >
 									    <input type="hidden" name="_method" value="delete">
-									    <input type="submit" value="Delete" class="btn btn-link mb-1 ml-2">
+									    <input type="submit" value="Delete" class="btn btn-link mb-1 ml-2 delete">
 									    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 									</form>
 			            		</c:when>
@@ -135,9 +130,10 @@
 		    </tbody>
 		</table>
 	</div>
+	</body>
 	<!-- --------------------Bottom form------------------------------- -->
-	<div class="col-8 mt-5 mb-5">
-		<h3 class="mb-4">Create an event</h3>
+	<div id="newform" class="col-6">
+		<h4>Create an event</h4>
 		<p class="text-danger">
 			<c:out value="${error}"/>
 			<form:errors path="event.*" />
@@ -159,8 +155,8 @@
 	               <form:options items="${stateList}" />
 	            </form:select>
 	        </p>
-	        <input class="btn btn-sm btn-info offset-7" type="submit" value="Submit"/>
+	        <input id="btn" class="btn btn-sm btn-info offset-7" type="submit" value="Submit"/>
 	    </form:form>
     </div>
-</body>
+
 </html>

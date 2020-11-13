@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Overlock&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+
+* {
+	margin: auto;
+	padding: 0;
+	font-family: 'Overlock', cursive;
+	color: #1B264F;
+}
+
+#header {
+	background-color: rgba(113, 128, 185, 0.8);
+	padding: 5px 40px;
+	display: flex;
+	justify-content: space-between;
+}
+	#header h2 {
+	font-family: 'Fugaz One', cursive;
+	font-size: 30px;
+	color: white;
+	-webkit-text-stroke: 1px rgba(27, 38, 79, 0.7);
+	text-shadow: 1px 1px 3px white, 2px 3px 5px rgba(82, 89, 142, 0.5);
+	}
+	
+	#header input, #header a{
+		color: white;
+		margin-bottom: 6px;
+		text-decoration: none;
+	}
+		#header input:hover, #header a:hover {
+			background-color: rgba(113, 128, 185, 0.6);
+		}
+		
+	#header-right {
+		display: flex;
+		margin-left: 78%;
+	}
+
+body {
+	background-color: #E9E7E7;
+}
+
+h3 {
+	font-family: 'Fugaz One', cursive;
+	font-size: 35px;
+	color: rgba(27, 38, 79, 0.7);
+	-webkit-text-stroke: 0.02em rgba(255, 255, 255, 0.7);
+	text-shadow: 1px 1px 3px white, 2px 3px 5px rgba(82, 89, 142, 0.5);
+}
+
+/* left side styling */
+#left {
+	margin-top: 0;
+	padding: 20px;
+}
+	#left p {
+		margin-left: 20px;
+	}
+
+.table {
+	border-radius: 2px;
+	box-shadow: 3px 3px 2px rgba(23, 23, 56, 0.3);
+	background-color: white;
+}
+	thead, th {
+		background-color: rgba(113, 128, 185, 0.35);
+		color: white;
+	}
+	th, td {
+		border: 1px solid #BBC1DD;
+	}
+
+/* right side styling */
+#right {
+	margin: auto;
+	margin-top: 20px;
+}
+
+#msgbox {
+	height:	200px;
+	width: 80%;
+	background-color: white;
+	border-radius: 4px;
+}
+
+#msg {
+    padding: 15px;
+    background-color: #71A9F7;
+    color: white;
+    width: 65%;
+    border-radius: 12px;
+    box-shadow: 4px 2px 5px -2px #888;
+}
+
+#comment {
+	margin-left: 70px;
+}
+
+#btn {
+	background-color: #1B264F;
+	border: 1px solid #171738;
+	margin-left: 395px;
+}
+	#btn:hover {
+		background-color: #767B91;
+		border: 1px solid rgba(27, 38, 79, 0.5);
+	}

@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Overlock&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+
+* {
+	margin: auto;
+	padding: 0;
+	font-family: 'Overlock', cursive;
+	color: #1B264F;
+}
+
+#header {
+	background-color: rgba(113, 128, 185, 0.8);
+	padding: 5px 40px;
+	display: flex;
+	justify-content: space-between;
+}
+	#header h2 {
+	font-family: 'Fugaz One', cursive;
+	font-size: 30px;
+	color: white;
+	-webkit-text-stroke: 1px rgba(27, 38, 79, 0.7);
+	text-shadow: 1px 1px 3px white, 2px 3px 5px rgba(82, 89, 142, 0.5);
+	}
+	
+	#header input, #header p{
+		color: white;
+		margin-bottom: 6px;
+		text-decoration: none;
+	}
+		#header input:hover, #header p:hover {
+			background-color: rgba(113, 128, 185, 0.6);
+		}
+
+body {
+	background-color: #E9E7E7;
+}
+
+a {
+	color: #A6777A;
+}
+	a:hover {
+		color: #F1917E;
+		text-decoration: none;
+	}
+
+#pag {
+	width: 79%;
+	display: flex;
+	justify-content: space-between;
+}
+
+h4 {
+	width: 67%;
+	font-weight: bold;
+	font-size: 28px;
+	text-shadow: 1px 1px 3px white;
+	padding: 10px 10px 0px 10px;
+}
+	#subheader {
+		margin-top: 20px;
+	}
+
+.table {
+	margin: auto;
+	border-radius: 2px;
+	box-shadow: 3px 3px 2px rgba(23, 23, 56, 0.3);
+	background-color: white;
+}
+	thead, th {
+		background-color: rgba(113, 128, 185, 0.35);
+		color: white;
+	}
+	th, td {
+		border: 1px solid #BBC1DD;
+	}
+
+.delete {
+	color: #EB8258;
+}
+	.delete:hover {
+		color: #F2AD91;
+		text-decoration: none;
+	}
+
+/* form styling */
+#newform {
+	width: 40%;
+	margin-top: 40px;
+	background-color: #B0B9D8;
+	padding: 30px 100px 20px 0;
+	border: 1px solid rgba(255, 255, 255, 0.45);
+	border-radius: 4px;
+	box-shadow: 2px 2px 6px rgba(23, 23, 56, 0.45);
+}
+
+#newform h4 {
+	margin-top: -10px;
+	text-shadow: 1px 1px 3px white;
+}
+
+#newform p {
+	width: 200%;
+}
+
+input, select {
+	background-color: #FFF4EC;
+	border: none;
+	border-radius: 2px;
+}
+
+#btn {
+	background-color: #1B264F;
+	border: 1px solid #171738;
+}
+	#btn:hover {
+		background-color: #767B91;
+		border: 1px solid rgba(27, 38, 79, 0.5);
+	}

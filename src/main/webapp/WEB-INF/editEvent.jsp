@@ -11,18 +11,21 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="Description" content="Edit your event"> <!-- Explanation that shows up in search engines goes here.-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/editstyles.css">
 </head>
 <body>
-	<div class="col-8 mt-5 mb-5">
-	<div class="row mb-4">
-		<h3 class="col-5">${event.eventName}</h3>
-		<a href="/home/events/1" class="mr-3 ml-5 pt-2">View all events</a>
+	<div id="header" class="row mb-4">
+		<div id="right">
+		<a href="/home/events/1" class="mr-3 ml-5 pt-2 btn">View all events</a>
 		<form id="logoutForm" method="POST" action="/logout">
 	        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	        <input class="btn btn-link" type="submit" value="Log out" />
 	    </form>
+	    </div>
 	</div>
-	<form:form action="/events/${event.id}/edit" method="post" modelAttribute="event">
+	<div class="col-8 mt-5 mb-5">
+	<h3 class="col-5">${event.eventName}</h3>
+	<form:form action="/events/${event.id}/edit" method="post" modelAttribute="event" id="editform">
     	<input type="hidden" name="_method" value="put">
     		<p>
     			<input type="hidden" name="_method" value="put">
@@ -41,7 +44,7 @@
 	               <form:options items="${stateList}" />
 	            </form:select>
 	        </p>
-        <input class="btn btn-sm btn-info offset-7" type="submit" value="Save changes"/>
+        <input class="btn btn-sm btn-info offset-7" id="btn" type="submit" value="Save changes"/>
    	</form:form>
    	</div>
 </body>

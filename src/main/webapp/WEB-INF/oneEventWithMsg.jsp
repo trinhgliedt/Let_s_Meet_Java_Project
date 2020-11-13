@@ -12,36 +12,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="Description" content="Page that shows this particular event"> <!-- Explanation that shows up in search engines .-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-    	* {
-    		margin: 0 auto;
-    		padding: 0;
-    	}
-    	
-    	#msg {
-    		padding: 15px;
-    		background-color: #71A9F7;
-    		color: white;
-    		width: 45%;
-    		border-radius: 12px;
-    		box-shadow: 4px 2px 5px -2px #888;
-    	}
-    
-    </style>
+    <link rel="stylesheet" href="/css/viewstyles.css">
 </head>
-<body class="p-4">
-	<div class="row mb-4"> <!-- Top bar -->
-		<h3 class="col-8">${event.eventName}</h3>
-		<a href="/home/events/1" class="mr-3 ml-5">View all events</a>
+<body>
+	<div id="header" class="row mb-4"> <!-- Top bar -->
+	<div id="header-right">
+		<a href="/home/events/1" class="mr-3 ml-5 btn">View all events</a>
 		<form id="logoutForm" method="POST" action="/logout">
 	        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	        <input class="btn btn-link pt-0" type="submit" value="Log out" />
 	    </form>
+	    </div>
 	</div>
 	<!-- Main content -->
 	<div class="row">
 		<!------------ Beginning of left side ----------------->
-		<div class="col-5 mx-4"> 
+		<div class="col-5" id="left"> 
+			<h3 class="col-8">${event.eventName}</h3>
+			<div id="panel">
 			<p>Host: <c:out value="${event.eventHost.firstName}"/> <c:out value="${event.eventHost.lastName}"/></p>
 			<p>Date: 
 			<jsp:useBean id="date" class="java.util.Date"/>
@@ -65,11 +53,12 @@
 			        </c:forEach>
 			    </tbody>
 			</table>
+			</div>
 		</div> <!------------ End of left side ----------------->
 		<!------------ Beginning of right side ----------------->
-		<div class="col-6 "> 
-			<h3>Message wall:</h3>
-			<div style="height:200px" class="overflow-auto p-2 border my-4"> <!------------Beginning of Message box--------------->
+		<div class="col-6" id="right"> 
+			<h3>Message Wall:</h3>
+			<div id="msgbox" class="overflow-auto p-2 my-4"> <!------------Beginning of Message box--------------->
 				<c:forEach items="${event.messages}" var="message">
 		        <p id="msg"><c:out value="${message.user.firstName}"/> <c:out value="${message.user.lastName}"/>: <c:out value="${message.messageText}"/></p>
 		        <!-- <p>-----------------------</p> -->
@@ -78,14 +67,16 @@
 				<form:form method="POST" action="/events/${event.id}" modelAttribute="message">
 		        <p>
 			</div><!------------ End of Message box--------------->
+			<div id="comment">
 	            <p>Add comment:</p>
 	            <p class="text-danger"><form:errors path="message*" />
     				<c:out value="${error}"/>
    				 </p>
 	            <form:textarea cols="60" rows="5" path="messageText"/>
 	        </p>
-	        <input type="submit" value="Submit" class="btn btn-info btn-sm offset-9"/>
+	        <input id="btn" type="submit" value="Submit" class="btn btn-info btn-sm offset-9"/>
 	    </form:form>
+	    </div>
 		</div> <!------------ End of right side ----------------->
 </body>
 </html>

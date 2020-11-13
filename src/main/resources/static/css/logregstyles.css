@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Overlock&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+
+* {
+	margin: auto 0;
+	padding: 0;
+}
+
+body {
+	background-color: rgba(226, 223, 224, 0.75);
+	font-family: 'Overlock', cursive;
+	height: 100%;
+}
+
+#tabs {
+	display: flex;
+	width: 450px;
+	padding: 10px;
+	justify-content: space-evenly;
+	margin: auto;
+}
+
+.title {
+	z-index: 1;
+	font-family: 'Fugaz One', cursive;
+	font-size: 45px;
+	color: #1B264F;
+	text-shadow: 1px 1px 3px white, 2px 3px 5px rgba(82, 89, 142, 0.5);
+}
+	.title:hover {
+		color: #A4B8C4;
+	}
+	/* #title-r{
+		margin: -9px 0px 0px 79px;
+		color: red;
+	}
+	
+	#title-l {
+		margin: -9px 0px 0px 479px;
+	} */
+
+.tabcontent {
+	border: none;
+}
+
+#reg {
+ 	background-color: rgba(113, 128, 185, 0.4);
+	margin: 0px 40px 0px 280px;
+	padding: 30px 0px 20px 50px;
+	border-radius: 4px;
+	box-shadow: 2px 2px rgba(23, 23, 56, 0.45);
+}
+
+#login {
+	background-color: rgba(113, 128, 185, 0.4);
+	border-radius: 4px;
+	box-shadow: 2px 2px rgba(23, 23, 56, 0.45);
+	padding: 30px 0px 15px 35px;
+	position: absolute;
+	top: 116px;
+	left: 280px;
+	display: none;
+}
+	
+input, select {
+	background-color: #FFF4EC;
+	border: none;
+	border-radius: 2px;
+	margin: 6px;
+}
+
+.btn {
+	background-color: #1B264F;
+	border: 1px solid #171738;
+}
+	.btn:hover {
+		background-color: #767B91;
+		border: 1px solid rgba(27, 38, 79, 0.5);
+	}
+
+#msgs {
+	color: tomato;
+	margin-left: 400px;
+}
