@@ -60,8 +60,8 @@ public class UserController {
     		return "login-reg.jsp"; // Go back to registration page instead of redirect so that error messages will pop up
 		}
 		else {
-			userService.saveWithUserRole(user);
-//			userService.saveUserWithAdminRole(user);
+//			userService.saveWithUserRole(user);
+			userService.saveUserWithAdminRole(user);
 			
 		}
 		return "redirect:/";
